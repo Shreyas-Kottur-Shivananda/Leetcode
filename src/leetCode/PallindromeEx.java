@@ -22,7 +22,7 @@ public class PallindromeEx {
 			
 		}
 	
-		if (original == result && result > 0) {
+		if (original == result && result >= 0) {
 			System.out.println(true);
 		}
 		else {
