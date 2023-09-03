@@ -1,77 +1,66 @@
 package leetCodeExamples;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class Problem2 {
 
     public static void main(String[] arg) {
-        System.out.print(isValid("()"));
+        System.out.print(isValid("([{}])"));
     }
 
     public static boolean isValid(String s) {
-        Map<String, Integer> chars = new HashMap<>();
-        boolean flag = false;
+        Deque<Character> chars = new ArrayDeque<>();
         for (int i = 0; i < s.length(); i++) {
             switch (s.charAt(i)) {
                 case '(':
-                    if (!chars.containsKey("(")) {
-                        chars.put("(", 1);
-                    } else{
-                        var count = chars.get("(") + 1;
-                        chars.put("(",count);
-                    }
-                    break;
-                case ')':
-                    if(chars.containsKey("(")){
-                        var count = chars.get("(") - 1;
-                        chars.put("(",count);
-                    }
+                    chars.push('(');
                     break;
                 case '{':
-                    if (!chars.containsKey("{")) {
-                        chars.put("{", 1);
-                    } else{
-                        var count = chars.get("{") + 1;
-                        chars.put("{",count);
-                    }
-                    break;
-
-                case '}':
-                    if(chars.containsKey("}")){
-                        var count = chars.get("}") - 1;
-                        chars.put("}",count);
-                    }
+                    chars.push('{');
                     break;
                 case '[':
-                    if (!chars.containsKey("[")) {
-                        chars.put("[", 1);
-                    } else{
-                        var count = chars.get("[") + 1;
-                        chars.put("[",count);
+                    chars.push('[');
+                    break;
+                case ')':
+                    if (!chars.isEmpty()) {
+                        if (chars.peek() == '(') {
+                            chars.pop();
+                        } else {
+                            chars.push(')');
+                        }
+                    } else {
+                        chars.push(')');
                     }
                     break;
-
+                case '}':
+                    if (!chars.isEmpty()) {
+                        if (chars.peek() == '{') {
+                            chars.pop();
+                        } else {
+                            chars.push('}');
+                        }
+                    }
+                    else {
+                        chars.push('}');
+                    }
+                    break;
                 case ']':
-                    if(chars.containsKey("]")){
-                        var count = chars.get("]") - 1;
-                        chars.put("]",count);
+                    if (!chars.isEmpty()) {
+                        if (chars.peek() == '[') {
+                            chars.pop();
+                        } else {
+                            chars.push(']');
+                        }
                     }
-                    break;
-                default:
+                    else {
+                        chars.push(']');
+                    }
                     break;
             }
         }
-        if(chars.containsKey("(") && chars.get("(") >= 0){
-            flag = true;
-        }
-        if(chars.containsKey("{") && chars.get("{") >= 0){
-            flag = true;
-        }
-        if(chars.containsKey("[") && chars.get("[") >= 0){
-            flag = true;
-        }
-        return flag;
+
+        return chars.isEmpty();
     }
 
 }
